@@ -1,4 +1,4 @@
-# Arduino-IR-sensor-with-modulation
+# Arduino IR sensor with modulation
 
 
 Default speed for PWM is 490Hz on pins 9 and 10 (Timer1). This was too slow to have any effect (sensing loop is quicker, than one PWM cycle). So it had to be changed to 3906 Hz.
