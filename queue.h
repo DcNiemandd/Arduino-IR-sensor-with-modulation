@@ -30,7 +30,7 @@ public:
 
   // Self-explanatory
   double AverageFreq()
-  { /*   
+  {    
     for(int i = 1; i < Q_length; i++)
     {
       Serial.print((String)" " + data[i-1]);
