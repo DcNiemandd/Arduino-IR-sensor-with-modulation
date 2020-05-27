@@ -32,7 +32,7 @@ public:
   double AverageFreq(int treshold)
   {    
     #ifdef LOGS
-      for(int i = 1; i < Q_length; i++)
+      /*for(int i = 1; i < Q_length; i++)
       {
         Serial.print((String)" " + data[i-1]);
       }
