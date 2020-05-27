@@ -34,7 +34,6 @@ double  time_started    = 0;
 int     readValue       = 0;
 double  dataFreq1       = 0;
 double  dataFreq2       = 0;
-bool    outputPulseMem  = false;
 bool    outputMem       = false;
 Queue   fronta1(lengthOfQ);
 Queue   fronta2(lengthOfQ);
@@ -95,12 +94,9 @@ void loop() {
     #ifdef LOGS          
       Serial.println("HAND"); 
     #endif
-    if(!outputPulseMem)        
-      digitalWrite(outputPulse, 0);
     if(!outputMem)
       time_started = millis(); 
     Timers();
-    outputPulseMem = true;
     outputMem = true;    
   }
   else
@@ -110,7 +106,6 @@ void loop() {
     #endif
     digitalWrite(outputPulse, 1);
     digitalWrite(output, 1);
-    outputPulseMem = false;
     outputMem = false;
   }   
   #ifdef LOGS   
@@ -123,7 +118,7 @@ void loop() {
 void Timers()
 {
   if(time_started + 1000 * PULSE_TIME > millis())  
-    digitalWrite(outputPulse, 1);
+    digitalWrite(outputPulse, 0);
   if(time_started + 1000 * MAX_TIME   > millis())      
     digitalWrite(output, 0);  
 }

@@ -9,7 +9,7 @@ private:
   unsigned *data;  
   Queue(const Queue& Q);
 public: 
-  Queue(int _Q_length = 500): Q_length(_Q_length)  
+  Queue(int _Q_length = 250): Q_length(_Q_length)  
   {
     data = new unsigned[Q_length];
   }
@@ -74,7 +74,7 @@ public:
     
     for(int i = 4; i < Q_length; ++i)
     {
-      if(data[i-4] < data[i-3] and data[i-3] < data[i-2] and data[i-1] < data[i-2] and data[i] < data[i-1]) // data[i-2] is maximum
+      if(data[i-2] < data[i-1] and data[i-1] > data[i]) // data[i-1] is maximum
       {        
         maxPosThis[maxCountThis] = (i-1) * loopTime;
         maxCountThis++;
@@ -86,7 +86,7 @@ public:
     
     for(int i = 4; i < that.Q_length; ++i)
     {
-      if(that.data[i-4] < that.data[i-3] and that.data[i-3] < that.data[i-2] and that.data[i-1] < that.data[i-2] and that.data[i] < that.data[i-1]) // data[i-2] is maximum
+      if(that.data[i-2] < that.data[i-1] and that.data[i-1] > that.data[i]) // data[i-1] is maximum
       {        
         maxPosThat[maxCountThat] = (i-1) * loopTime;
         maxCountThat++;
@@ -97,11 +97,10 @@ public:
 
     for(int i = 1; i < maxCountThat or i < maxCountThis; ++i)
     {
-      returnVal = maxPosThis[i] - maxPosThat[i];
+      returnVal += maxPosThis[i] - maxPosThat[i];
     }
-
     
-    return maxCountThis > maxCountThat ? returnVal/maxCountThat : returnVal/maxCountThis;
+    return  (maxCountThis == 0)or(maxCountThat == 0) ? 0 : (maxCountThis > maxCountThat ? returnVal/maxCountThat : returnVal/maxCountThis);
   }
 };
 
