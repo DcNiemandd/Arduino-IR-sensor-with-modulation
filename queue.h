@@ -31,8 +31,8 @@ public:
   // Self-explanatory
   double AverageFreq(int treshold)
   {    
-    #ifdef LOGS
-      /*for(int i = 1; i < Q_length; i++)
+    #ifdef LOGS_readed_vals
+      for(int i = 1; i < Q_length; i++)
       {
         Serial.print((String)" " + data[i-1]);
       }

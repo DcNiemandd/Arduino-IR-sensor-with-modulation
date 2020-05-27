@@ -1,4 +1,6 @@
-#define LOGS
+// Pokud je pozadovana komunikace s PC, tak umazat //
+//#define LOGS
+//#define LOGS_readed_vals
 
 #include "queue.h"
 
@@ -16,11 +18,17 @@
 #define FREQ            20    //Hz    Elektronicky predradnik 30-50 kHz
 #define FREQ_DEAD_ZONE  15    //Hz
 #define omega           2 * PI * FREQ //rad/s
-const int loopTime    = 1800; //us
-#define lengthOfQ       100
+const int loopTime    = 1800; //us    Minimalne 1800
+#define lengthOfQ       100   //      Maximalne 250, jinak pretece pamet
 #define MAX_TIME        5     //s
 #define ERROR_TIME      20    //s
 #define PULSE_TIME      1     //s
+
+
+
+
+
+
   
 double  lastLoopTime    = 0;
 double  time_started    = 0;
@@ -47,6 +55,9 @@ void setup() {
   // PWM setup to 3906 Hz https://forum.arduino.cc/index.php/topic,16612.0.html
   // pins 9 and 10
   TCCR1B = TCCR1B & 0b11111000 | 0x02;
+  if(TRANS_1 !=
+
+  
   #ifdef LOGS
     Serial.begin(9600);
   #endif
@@ -107,6 +118,8 @@ void loop() {
   #ifdef LOGS   
     Serial.println((String)"Average Freq: " + dataFreq1 + "  " + dataFreq2);
   #endif
+
+  Timers();
 }
 
 void Timers()
