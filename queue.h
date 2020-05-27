@@ -31,12 +31,13 @@ public:
   // Self-explanatory
   double AverageFreq(int treshold)
   {    
-    for(int i = 1; i < Q_length; i++)
-    {
-      Serial.print((String)" " + data[i-1]);
-    }
-    Serial.println((String)" " + data[Q_length]);//*/
-        
+    #ifdef LOGS
+      for(int i = 1; i < Q_length; i++)
+      {
+        Serial.print((String)" " + data[i-1]);
+      }
+      Serial.println((String)" " + data[Q_length]);//*/
+    #endif
     int maxPos[Q_length] = { 0 };
     int maxCount = 0;
     
