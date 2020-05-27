@@ -21,7 +21,6 @@
 const int loopTime    = 1800; //us    Minimalne 1800
 #define lengthOfQ       100   //      Maximalne 250, jinak pretece pamet
 #define MAX_TIME        5     //s
-#define ERROR_TIME      20    //s
 #define PULSE_TIME      1     //s
 
 
@@ -46,7 +45,6 @@ void setup() {
   pinMode(TRANS_2,      OUTPUT);
   pinMode(output,       OUTPUT);  
   pinMode(outputPulse,  OUTPUT);
-  pinMode(error,        OUTPUT);
   // Input pins
   pinMode(REC_1,        INPUT);  
   pinMode(REC_2,        INPUT);
@@ -55,8 +53,8 @@ void setup() {
   // PWM setup to 3906 Hz https://forum.arduino.cc/index.php/topic,16612.0.html
   // pins 9 and 10
   TCCR1B = TCCR1B & 0b11111000 | 0x02;
-  if(TRANS_1 !=
-
+  if(TRANS_1 != 9 or TRANS_2 != 10)
+    while(true);
   
   #ifdef LOGS
     Serial.begin(9600);
@@ -127,12 +125,5 @@ void Timers()
   if(time_started + 1000 * PULSE_TIME > millis())  
     digitalWrite(outputPulse, 1);
   if(time_started + 1000 * MAX_TIME   > millis())      
-      digitalWrite(output, 0);  
-  if(time_started + 1000 * ERROR_TIME > millis()) 
-  {    
-    digitalWrite(outputPulse, 1);
-    digitalWrite(output, 1);
-    digitalWrite(error, 1); 
-    while(true);
-  }
+    digitalWrite(output, 0);  
 }
