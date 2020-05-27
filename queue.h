@@ -29,7 +29,7 @@ public:
   }
 
   // Self-explanatory
-  double AverageFreq()
+  double AverageFreq(int treshold)
   {    
     for(int i = 1; i < Q_length; i++)
     {
@@ -43,9 +43,12 @@ public:
     for(int i = 2; i < Q_length; i++)
     {      
       if(data[i-2] < data[i-1] and data[i-1] > data[i]) // data[i-1] is maximum
-      {                        
-        maxPos[maxCount] = (i-1);
-        maxCount++;
+      {                  
+        if(data[i-1] >= treshold)
+        {      
+          maxPos[maxCount] = (i-1);
+          maxCount++;
+        }
       }  
     }
     if(maxCount==0)

@@ -2,15 +2,16 @@
 
 // Pinout  
 #define TRANS_1         9  
-#define REC_1           A0
+#define REC_1           A2
 #define TRANS_2         10
-#define REC_2           A1
+#define REC_2           A3
 #define output          11
 #define outputPulse     8
+#define calibration     A0
 
 // Defines
 #define FREQ            20          //Hz    Elektronicky predradnik 30-50 kHz
-#define FREQ_DEAD_ZONE  15            //Hz
+#define FREQ_DEAD_ZONE  5            //Hz
 #define omega           2 * PI * FREQ //rad/s
 const int loopTime    = 2000;         //us    Vzorkovaci cas, PWM freq is 490 Hz
 #define lengthOfQ       250
@@ -36,6 +37,7 @@ void setup() {
   // Input pins
   pinMode(REC_1, INPUT);  
   pinMode(REC_2, INPUT);
+  pinMode(calibration, INPUT);
 
   // PWM setup to 3906 Hz https://forum.arduino.cc/index.php/topic,16612.0.html
   // pins 9 and 10
@@ -67,8 +69,8 @@ void loop() {
   
   // Math
     // Get freq from field
-    dataFreq1 = (fronta1.AverageFreq()*1000000)/loopTime;
-    dataFreq2 = (fronta2.AverageFreq()*1000000)/loopTime;;    
+    dataFreq1 = (fronta1.AverageFreq(analogRead(calibration))*1000000)/loopTime;
+    dataFreq2 = (fronta2.AverageFreq(analogRead(calibration))*1000000)/loopTime;;    
     //dataOffset = fronta1.Offset(fronta2, loopTime);
     //dataOffset *= dataFreq1 * 2 * PI;
     if(/*abs(dataOffset - OFFSET) < OFFSET_DEAD_ZONE and */abs(dataFreq1 - FREQ) < FREQ_DEAD_ZONE or abs(dataFreq2 - FREQ) < FREQ_DEAD_ZONE) // Absolute error from wanted freq and offset
@@ -92,7 +94,6 @@ void loop() {
     loopCounter = 0;
     
   delayMicroseconds(500);
-  digitalWrite(output, 1);
   digitalWrite(outputPulse, 1);
 
 }
