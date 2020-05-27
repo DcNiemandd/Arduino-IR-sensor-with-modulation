@@ -9,10 +9,10 @@
 #define outputPulse     8
 
 // Defines
-#define FREQ            100          //Hz    Elektronicky predradnik 30-50 kHz
-#define FREQ_DEAD_ZONE  10            //Hz
+#define FREQ            20          //Hz    Elektronicky predradnik 30-50 kHz
+#define FREQ_DEAD_ZONE  15            //Hz
 #define omega           2 * PI * FREQ //rad/s
-const int loopTime    = 1800;         //us    Vzorkovaci cas, PWM freq is 490 Hz
+const int loopTime    = 2000;         //us    Vzorkovaci cas, PWM freq is 490 Hz
 #define lengthOfQ       250
 #define OFFSET          PI / 2        //rad 
 #define OFFSET_DEAD_ZONE PI / 32      //rad   
@@ -46,7 +46,7 @@ void setup() {
 }
 
 void loop() {
-  for(int i = 0; i < lengthOfQ + 2; i++)
+  for(int i = 0; i < lengthOfQ + 3; i++)
   {  
   // Write modulated output 
   double timy = micros()/1000000.0;
