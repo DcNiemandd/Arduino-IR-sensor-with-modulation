@@ -1,9 +1,9 @@
 #include "queue.h"
 
 // Pinout  
-#define TRANS_1         9  
+#define TRANS_1         9  // NEMENIT 
+#define TRANS_2         10 // NEMENIT
 #define REC_1           A2
-#define TRANS_2         10
 #define REC_2           A3
 #define output          11
 #define outputPulse     8
