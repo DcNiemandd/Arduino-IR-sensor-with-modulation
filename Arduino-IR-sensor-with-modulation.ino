@@ -1,8 +1,8 @@
 #include "settings.h"
 #include "queue.h"
   
-double  lastLoopTime    = 0;
-double  time_started    = 0;
+unsigned long  lastLoopTime    = 0;
+unsigned long  time_started    = 0;
 int     readValue       = 0;
 double  dataFreq1       = 0;
 double  dataFreq2       = 0;
@@ -103,7 +103,7 @@ void Timers()
     digitalWrite(outputPulse, 1);
   if(time_started + 1000 * MAX_TIME   < millis())      
     digitalWrite(output, 1);  
-  #ifdef enable_ERROR == 1
+  #if enable_ERROR == 1
     if(outputMem and (time_started + 1000 * ERROR_TIME   < millis()))     
       {
       #ifdef LOGS
