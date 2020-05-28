@@ -58,6 +58,8 @@ void setup() {
     #ifdef LOGS
       Serial.println("ERROR: Transmitters' pins are set wrong!");      
     #endif 
+    digitalWrite(outputPulse, 1);  
+    digitalWrite(output, 1);  
     digitalWrite(error, 1);  
     while(true);
     } 
@@ -100,7 +102,9 @@ void loop() {
   { 
     #ifdef LOGS          
       Serial.println("HAND"); 
-    #endif
+    #endif    
+    digitalWrite(outputPulse, 0);  
+    digitalWrite(output, 0);  
     if(!outputMem)
       time_started = millis(); 
     Timers();
@@ -123,15 +127,17 @@ void loop() {
 
 void Timers()
 {
-  if(time_started + 1000 * PULSE_TIME > millis())  
-    digitalWrite(outputPulse, 0);
-  if(time_started + 1000 * MAX_TIME   > millis())      
-    digitalWrite(output, 0);  
-  if(outputMem and (time_started + 1000 * ERROR_TIME   > millis()))     
+  if(time_started + 1000 * PULSE_TIME < millis())  
+    digitalWrite(outputPulse, 1);
+  if(time_started + 1000 * MAX_TIME   < millis())      
+    digitalWrite(output, 1);  
+  if(outputMem and (time_started + 1000 * ERROR_TIME   < millis()))     
     {
     #ifdef LOGS
       Serial.println("ERROR: Sensing too long!");      
     #endif 
+    digitalWrite(outputPulse, 1);  
+    digitalWrite(output, 1);  
     digitalWrite(error, 1);  
     while(true);
     }     
