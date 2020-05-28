@@ -114,7 +114,7 @@ void Timers()
   if(time_started + 1000 * MAX_TIME   < millis())      
     digitalWrite(output, 1);  
   #if enable_ERROR == 1
-    if(outputMem and ((unsigned long)(time_started + 1000 * ERROR_TIME)   < millis()))     
+    if(outputMem and ((unsigned long)(time_started + 1000 * (unsigned long)ERROR_TIME)   < millis()))     
       {
       #ifdef LOGS
         Serial.println("ERROR: Sensing too long!");      
