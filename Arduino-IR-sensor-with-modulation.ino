@@ -104,7 +104,7 @@ void IOcontroll()
     if(time_started + 1000 * PULSE_TIME < millis())  
     {      
       digitalWrite(outputPulse, 1);
-      if(!outputMem and (unsigned long)(4294900000) < millis())
+      if(false)//!outputMem and (unsigned long)(4294900000) < millis())
       {      
         resetFunc();  //call reset
       }
