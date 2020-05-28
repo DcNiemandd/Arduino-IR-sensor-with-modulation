@@ -1,34 +1,5 @@
-// Pokud je pozadovana komunikace s PC, tak umazat //
-//#define LOGS
-//#define LOGS_readed_vals
-
+#include "settings.h"
 #include "queue.h"
-
-// Pinout  
-#define TRANS_1         9  // NEMENIT 
-#define TRANS_2         10 // NEMENIT
-#define REC_1           A2
-#define REC_2           A3
-#define output          LED_BUILTIN
-#define outputPulse     8
-#define calibration     A0
-#define error           2
-
-// Defines
-#define FREQ            20    //Hz    Elektronicky predradnik 30-50 kHz
-#define FREQ_DEAD_ZONE  15    //Hz
-#define omega           2 * PI * FREQ //rad/s
-const int loopTime    = 1800; //us    Minimalne 1800
-#define lengthOfQ       100   //      Maximalne 250, jinak pretece pamet
-#define MAX_TIME        5     //s
-#define PULSE_TIME      1     //s
-#define ERROR_TIME      30    //s
-#define enable_ERROR    0     // 0 - bez erroru     1 - s errorem
-
-
-
-
-
   
 double  lastLoopTime    = 0;
 double  time_started    = 0;
