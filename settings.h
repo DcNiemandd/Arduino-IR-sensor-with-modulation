@@ -21,4 +21,4 @@ const int loopTime    = 1800; //us    Perioda vzorkovani, min 1800
 #define MAX_TIME        5     //s     Maximalni doba trvani vystupu 'output'
 #define PULSE_TIME      1     //s     Doba trvani vystupu 'outputPulse'
 #define ERROR_TIME      180   //s     Maximalni povolena doba snimani ruky, vystup 'error'
-#define enable_ERROR    1     //      0 - bez erroru     1 - s errorem
+#define enable_ERROR    TRUE  //      false - bez erroru     true - s errorem

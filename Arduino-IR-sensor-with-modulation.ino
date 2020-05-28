@@ -9,7 +9,7 @@ double  dataFreq2       = 0;
 bool    outputMem       = false;
 Queue   fronta1(lengthOfQ);
 Queue   fronta2(lengthOfQ);
-void(* resetFunc) (void) = 0;//declare reset function at address 0
+void(* resetFunc) (void) = 0;   //declare reset function at address 0
 
 
 void setup() {
@@ -52,8 +52,8 @@ void loop() {
     analogWrite(TRANS_1, int(128 * (1 +  sin((omega* timy))))); 
     analogWrite(TRANS_2, int(128 * (1 +  sin((omega* timy))))); 
 
-    // "Timers"
-    Timers();
+    // "IOcontroll"
+    IOcontroll();
 
     // Read input and save in field
     int read1 = analogRead(REC_1);
@@ -77,52 +77,60 @@ void loop() {
     #ifdef LOGS          
       Serial.println("HAND"); 
     #endif         
+    
     if(!outputMem)
     {
-      digitalWrite(outputPulse, 0);  
-      digitalWrite(output, 0);
-      time_started = millis(); 
-    }
-    Timers();
-    outputMem = true;    
+      time_started = millis();       
+      outputMem = true; 
+    }    
   }
   else
   {
     #ifdef LOGS
       Serial.println("NOTHING");      
     #endif
-    digitalWrite(output, 1);
     outputMem = false;
   }   
   #ifdef LOGS   
     Serial.println((String)"Average Freq: " + dataFreq1 + "  " + dataFreq2);
   #endif
 
-  Timers();
+  IOcontroll();
 }
 
-void Timers()
+void IOcontroll()
 {
-  if(time_started + 1000 * PULSE_TIME < millis())  
-  {
-    digitalWrite(outputPulse, 1);
-    if(!outputMem and (unsigned long)(4294900000) < millis())
+    // Pulzes
+    if(time_started + 1000 * PULSE_TIME < millis())  
     {      
-      resetFunc();  //call reset
+      digitalWrite(outputPulse, 1);
+      if(!outputMem and (unsigned long)(4294900000) < millis())
+      {      
+        resetFunc();  //call reset
+      }
     }
-  }
-  if(time_started + 1000 * MAX_TIME   < millis())      
-    digitalWrite(output, 1);  
-  #if enable_ERROR == 1
-    if(outputMem and ((unsigned long)(time_started + 1000 * (unsigned long)ERROR_TIME)   < millis()))     
-      {
-      #ifdef LOGS
-        Serial.println("ERROR: Sensing too long!");      
-      #endif 
-      digitalWrite(outputPulse, 1);  
+    else
+    {
+      digitalWrite(outputPulse, 0);      
+    } 
+    
+    // Stable output 
+    if(!outputMem or (time_started + 1000 * (unsigned long)MAX_TIME < millis()))      
       digitalWrite(output, 1);  
-      digitalWrite(error, 1);  
-      while(true);
-      }     
-  #endif  
+    else
+      digitalWrite(output, 0);
+
+    // Error timing   
+    #if enable_ERROR
+      if(outputMem and ((unsigned long)time_started + (unsigned long)1000 * (unsigned long)ERROR_TIME   < millis()))     
+        {
+        #ifdef LOGS
+          Serial.println("ERROR: Sensing too long!");      
+        #endif 
+        digitalWrite(outputPulse, 1);  
+        digitalWrite(output, 1);  
+        digitalWrite(error, 1);  
+        while(true);
+        }     
+    #endif 
 }
