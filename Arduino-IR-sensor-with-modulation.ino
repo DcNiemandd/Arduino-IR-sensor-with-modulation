@@ -101,28 +101,32 @@ void loop() {
 void IOcontroll()
 {
     // Pulzes
-    if(time_started + 1000 * PULSE_TIME < millis())  
+    if((time_started + 1000 * PULSE_TIME) > millis())  
     {      
-      digitalWrite(outputPulse, 1);
-      if(false)//!outputMem and (unsigned long)(4294900000) < millis())
-      {      
-        resetFunc();  //call reset
-      }
+      digitalWrite(outputPulse, 0);
     }
     else
     {
-      digitalWrite(outputPulse, 0);      
+      digitalWrite(outputPulse, 1);      
+      if(false)//!outputMem and (4294900000ul) < millis())
+      {      
+        resetFunc();  //call reset
+      }//*/
     } 
     
     // Stable output 
-    if(!outputMem or (time_started + 1000 * (unsigned long)MAX_TIME < millis()))      
-      digitalWrite(output, 1);  
+    if(outputMem and ((time_started + 1000 * MAX_TIME) > millis()))   
+    {   
+      digitalWrite(output, 0);  
+    }
     else
-      digitalWrite(output, 0);
+    {
+      digitalWrite(output, 1);
+    }
 
     // Error timing   
     #if enable_ERROR
-      if(outputMem and ((unsigned long)time_started + (unsigned long)1000 * (unsigned long)ERROR_TIME   < millis()))     
+      if(outputMem and ((time_started + 1000 * ERROR_TIME)   < millis()))     
         {
         #ifdef LOGS
           Serial.println("ERROR: Sensing too long!");      
