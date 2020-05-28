@@ -74,11 +74,13 @@ void loop() {
   { 
     #ifdef LOGS          
       Serial.println("HAND"); 
-    #endif    
-    digitalWrite(outputPulse, 0);  
-    digitalWrite(output, 0);  
+    #endif         
     if(!outputMem)
+    {
+      digitalWrite(outputPulse, 0);  
+      digitalWrite(output, 0);
       time_started = millis(); 
+    }
     Timers();
     outputMem = true;    
   }
@@ -104,7 +106,7 @@ void Timers()
   if(time_started + 1000 * MAX_TIME   < millis())      
     digitalWrite(output, 1);  
   #if enable_ERROR == 1
-    if(outputMem and (time_started + 1000 * ERROR_TIME   < millis()))     
+    if(outputMem and ((unsigned long)(time_started + 1000 * ERROR_TIME)   < millis()))     
       {
       #ifdef LOGS
         Serial.println("ERROR: Sensing too long!");      
