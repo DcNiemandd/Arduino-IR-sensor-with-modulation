@@ -9,6 +9,8 @@ double  dataFreq2       = 0;
 bool    outputMem       = false;
 Queue   fronta1(lengthOfQ);
 Queue   fronta2(lengthOfQ);
+void(* resetFunc) (void) = 0;//declare reset function at address 0
+
 
 void setup() {
   // Output pins
@@ -102,7 +104,13 @@ void loop() {
 void Timers()
 {
   if(time_started + 1000 * PULSE_TIME < millis())  
+  {
     digitalWrite(outputPulse, 1);
+    if(!outputMem and (unsigned long)(4294900000) < millis())
+    {      
+      resetFunc();  //call reset
+    }
+  }
   if(time_started + 1000 * MAX_TIME   < millis())      
     digitalWrite(output, 1);  
   #if enable_ERROR == 1
@@ -116,5 +124,5 @@ void Timers()
       digitalWrite(error, 1);  
       while(true);
       }     
-  #endif
+  #endif  
 }
