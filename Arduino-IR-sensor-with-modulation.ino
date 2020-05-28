@@ -23,6 +23,7 @@ const int loopTime    = 1800; //us    Minimalne 1800
 #define MAX_TIME        5     //s
 #define PULSE_TIME      1     //s
 #define ERROR_TIME      30    //s
+#define enable_ERROR    0     // 0 - bez erroru     1 - s errorem
 
 
 
@@ -131,14 +132,16 @@ void Timers()
     digitalWrite(outputPulse, 1);
   if(time_started + 1000 * MAX_TIME   < millis())      
     digitalWrite(output, 1);  
-  if(outputMem and (time_started + 1000 * ERROR_TIME   < millis()))     
-    {
-    #ifdef LOGS
-      Serial.println("ERROR: Sensing too long!");      
-    #endif 
-    digitalWrite(outputPulse, 1);  
-    digitalWrite(output, 1);  
-    digitalWrite(error, 1);  
-    while(true);
-    }     
+  #ifdef enable_ERROR == 1
+    if(outputMem and (time_started + 1000 * ERROR_TIME   < millis()))     
+      {
+      #ifdef LOGS
+        Serial.println("ERROR: Sensing too long!");      
+      #endif 
+      digitalWrite(outputPulse, 1);  
+      digitalWrite(output, 1);  
+      digitalWrite(error, 1);  
+      while(true);
+      }     
+  #endif
 }
