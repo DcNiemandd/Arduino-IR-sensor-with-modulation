@@ -104,7 +104,6 @@ void loop() {
     #ifdef LOGS
       Serial.println("NOTHING");      
     #endif
-    digitalWrite(outputPulse, 1);
     digitalWrite(output, 1);
     outputMem = false;
   }   
