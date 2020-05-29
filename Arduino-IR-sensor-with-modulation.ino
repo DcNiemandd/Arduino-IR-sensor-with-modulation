@@ -37,8 +37,8 @@ void setup() {
     #ifdef LOGS
       Serial.println("ERROR: Transmitters' pins are set wrong!");      
     #endif 
-    digitalWrite(outputPulse, 1);  
-    digitalWrite(output, 1);  
+    digitalWrite(outputPulse, OUTPUT_NEG);  
+    digitalWrite(output, OUTPUT_NEG);  
     digitalWrite(error, 1);  
     while(true);
     } 
@@ -141,8 +141,8 @@ void IOcontroll()
         #ifdef LOGS
           Serial.println("ERROR: Sensing too long!");      
         #endif 
-        digitalWrite(outputPulse, 1);  
-        digitalWrite(output, 1);  
+        digitalWrite(outputPulse, OUTPUT_NEG);  
+        digitalWrite(output, OUTPUT_NEG);  
         digitalWrite(error, 1);  
         while(true);
         }     
