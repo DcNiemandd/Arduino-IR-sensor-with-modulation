@@ -7,10 +7,9 @@ int     readValue       = 0;
 double  dataFreq1       = 0;
 double  dataFreq2       = 0;
 bool    outputMem       = false;
-bool    hasStarted      = false;
 Queue   fronta1(lengthOfQ);
 Queue   fronta2(lengthOfQ);
-//void(* resetFunc) (void) = 0;   //declare reset function at address 0
+void(* resetFunc) (void) = 0;   //declare reset function at address 0
 
 
 void setup() {
@@ -71,6 +70,10 @@ void loop() {
   // Get freq from field
   dataFreq1 = (fronta1.AverageFreq(analogRead(calibration))*1000000)/loopTime;
   dataFreq2 = (fronta2.AverageFreq(analogRead(calibration))*1000000)/loopTime;
+
+  // Cause of negative FREQ_DEAD_ZONE 
+  dataFreq1 = dataFreq1 == 0 ? FREQ + 5 * FREQ_DEAD_ZONE : dataFreq1;
+  dataFreq2 = dataFreq2 == 0 ? FREQ + 5 * FREQ_DEAD_ZONE : dataFreq2;
   
   // Absolute error from wanted freq
   if(abs(dataFreq1 - FREQ) < FREQ_DEAD_ZONE or abs(dataFreq2 - FREQ) < FREQ_DEAD_ZONE) 
@@ -79,12 +82,11 @@ void loop() {
       Serial.println("HAND"); 
     #endif         
     
-    if(!outputMem)
+    if(outputMem == false)
     {
-      time_started = millis();
-      hasStarted = true;       
-      outputMem = true; 
+      time_started = millis();           
     }    
+    outputMem = true; 
   }
   else
   {
@@ -102,8 +104,9 @@ void loop() {
 
 void IOcontroll()
 {
+          Serial.println((String)"outputMem: " + outputMem + " Zacal: " + time_started + " Ted je: " + millis() + " Rozdil: " + (millis() - time_started));       
     // Pulzes
-    if(hasStarted and (time_started + 1000ul * PULSE_TIME) > millis())  
+    if((time_started + 1000ul * PULSE_TIME) > millis())
     {      
       digitalWrite(outputPulse, !OUTPUT_NEG);
     }
@@ -113,7 +116,7 @@ void IOcontroll()
     } 
     
     // Stable output 
-    if(hasStarted and outputMem and ((time_started + 1000ul * MAX_TIME) > millis()))   
+    if(outputMem and ((time_started + 1000ul * MAX_TIME) > millis()))   
     {   
       digitalWrite(output, !OUTPUT_NEG);  
     }
@@ -122,19 +125,14 @@ void IOcontroll()
       digitalWrite(output, OUTPUT_NEG);
     }
 
-    if(((time_started + 1000 * MAX_TIME) < millis()) and ((time_started + 1000 * PULSE_TIME) < millis()) and !outputMem)
-    {
-      hasStarted = false;
-    }
-
-    if(!hasStarted and (4294900000ul) < millis())
+    if((4294900000ul < millis()) and !outputMem and ((time_started + 1000ul * PULSE_TIME) < millis()))
     {      
-      //resetFunc();  //call reset
-    }//*/
+      resetFunc();  //call reset
+    }
     
     // Error timing   
     #if enable_ERROR
-      if(outputMem and ((time_started + 1000 * ERROR_TIME) < millis()))     
+      if(outputMem and ((time_started + 1000ul * ERROR_TIME) < millis()))     
         {
         #ifdef LOGS
           Serial.println("ERROR: Sensing too long!");      

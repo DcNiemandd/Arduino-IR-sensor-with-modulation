@@ -1,5 +1,5 @@
 // Pokud je pozadovana komunikace s PC, tak umazat //
-//#define LOGS
+#define LOGS
 //#define LOGS_readed_vals
 
 // Pinout  
@@ -14,12 +14,12 @@
 
 // Defines
 #define               FREQ            20     //Hz    Modulacni frekvence, max 100Hz (asi)
-#define               FREQ_DEAD_ZONE  15     //Hz    Maxmimalni odchylka namerene frekvence od vysilane
+#define               FREQ_DEAD_ZONE  25     //Hz    Maxmimalni odchylka namerene frekvence od vysilane
 #define               omega           2 * PI * FREQ //rad/s  NEMENIT
 const int             loopTime      = 1800;  //us    Perioda vzorkovani, min 1800
 #define               lengthOfQ       100    //      Pocet vzorku, max 250, jinak pretece pamet
 const unsigned long   MAX_TIME      = 5;     //s     Maximalni doba trvani vystupu 'output'
 const unsigned long   PULSE_TIME    = 1;     //s     Doba trvani vystupu 'outputPulse'
-const unsigned long   ERROR_TIME    = 180;   //s     Maximalni povolena doba snimani ruky, vystup 'error'
+const unsigned long   ERROR_TIME    = 30;   //s     Maximalni povolena doba snimani ruky, vystup 'error'
 #define               enable_ERROR    true   //      false - bez erroru     true - s errorem
 #define               OUTPUT_NEG      false  //      false - pri zaznamenani LOG1
