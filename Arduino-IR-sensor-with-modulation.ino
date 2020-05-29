@@ -24,6 +24,11 @@ void setup() {
   pinMode(REC_2,        INPUT);
   pinMode(calibration,  INPUT);
 
+  
+  #if defined(LOGS) or defined(LOGS_readed_vals)
+    Serial.begin(9600);
+  #endif
+  
   // PWM setup to 3906 Hz https://forum.arduino.cc/index.php/topic,16612.0.html
   // pins 9 and 10
   TCCR1B = TCCR1B & 0b11111000 | 0x02;
@@ -37,10 +42,6 @@ void setup() {
     digitalWrite(error, 1);  
     while(true);
     } 
-  
-  #ifdef LOGS
-    Serial.begin(9600);
-  #endif
   lastLoopTime = micros();
 }
 
@@ -68,8 +69,9 @@ void loop() {
   
   // Math
   // Get freq from field
-  dataFreq1 = (fronta1.AverageFreq(analogRead(calibration))*1000000)/loopTime;
-  dataFreq2 = (fronta2.AverageFreq(analogRead(calibration))*1000000)/loopTime;
+  unsigned int calibr = analogRead(calibration);
+  dataFreq1 = (fronta1.AverageFreq(calibr)*1000000)/loopTime;
+  dataFreq2 = (fronta2.AverageFreq(calibr)*1000000)/loopTime;
 
   // Cause of negative FREQ_DEAD_ZONE 
   dataFreq1 = dataFreq1 == 0 ? FREQ + 5 * FREQ_DEAD_ZONE : dataFreq1;
@@ -129,7 +131,7 @@ void IOcontroll()
 
     if((4294900000ul < timy) and !outputMem and ((time_started + 1000ul * PULSE_TIME) < timy))
     {      
-      resetFunc();  //call reset
+      //resetFunc();  //call reset
     }
     
     // Error timing   

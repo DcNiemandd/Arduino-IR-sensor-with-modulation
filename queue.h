@@ -32,6 +32,7 @@ public:
   double AverageFreq(int treshold)
   {    
     #ifdef LOGS_readed_vals
+      Serial.print((String)"Kalibrace: " + treshold + " Data: ");
       for(int i = 1; i < Q_length; i++)
       {
         Serial.print((String)" " + data[i-1]);
