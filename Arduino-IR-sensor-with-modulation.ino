@@ -10,7 +10,7 @@ bool    outputMem       = false;
 bool    hasStarted      = false;
 Queue   fronta1(lengthOfQ);
 Queue   fronta2(lengthOfQ);
-void(* resetFunc) (void) = 0;   //declare reset function at address 0
+//void(* resetFunc) (void) = 0;   //declare reset function at address 0
 
 
 void setup() {
@@ -103,7 +103,7 @@ void loop() {
 void IOcontroll()
 {
     // Pulzes
-    if(hasStarted and (time_started + 1000 * PULSE_TIME) > millis())  
+    if(hasStarted and (time_started + 1000ul * PULSE_TIME) > millis())  
     {      
       digitalWrite(outputPulse, !OUTPUT_NEG);
     }
@@ -112,12 +112,12 @@ void IOcontroll()
       digitalWrite(outputPulse, OUTPUT_NEG);      
       if(false)//!outputMem and (4294900000ul) < millis())
       {      
-        resetFunc();  //call reset
+        //resetFunc();  //call reset
       }//*/
     } 
     
     // Stable output 
-    if(hasStarted and outputMem and ((time_started + 1000 * MAX_TIME) > millis()))   
+    if(hasStarted and outputMem and ((time_started + 1000ul * MAX_TIME) > millis()))   
     {   
       digitalWrite(output, !OUTPUT_NEG);  
     }
