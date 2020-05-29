@@ -7,6 +7,7 @@ int     readValue       = 0;
 double  dataFreq1       = 0;
 double  dataFreq2       = 0;
 bool    outputMem       = false;
+bool    hasStarted      = false;
 Queue   fronta1(lengthOfQ);
 Queue   fronta2(lengthOfQ);
 void(* resetFunc) (void) = 0;   //declare reset function at address 0
@@ -49,8 +50,8 @@ void loop() {
   {  
     // Write modulated output 
     double timy = micros()/1000000.0;
-    analogWrite(TRANS_1, int(128 * (1 +  sin((omega* timy))))); 
-    analogWrite(TRANS_2, int(128 * (1 +  sin((omega* timy))))); 
+    analogWrite(TRANS_1, int(128 * (1 +  sin(omega * timy)))); 
+    analogWrite(TRANS_2, int(128 * (1 +  sin(omega * timy)))); 
 
     // "IOcontroll"
     IOcontroll();
@@ -80,7 +81,8 @@ void loop() {
     
     if(!outputMem)
     {
-      time_started = millis();       
+      time_started = millis();
+      hasStarted = true;       
       outputMem = true; 
     }    
   }
@@ -101,13 +103,13 @@ void loop() {
 void IOcontroll()
 {
     // Pulzes
-    if((time_started + 1000 * PULSE_TIME) > millis())  
+    if(hasStarted and (time_started + 1000 * PULSE_TIME) > millis())  
     {      
-      digitalWrite(outputPulse, 0);
+      digitalWrite(outputPulse, !OUTPUT_NEG);
     }
     else
     {
-      digitalWrite(outputPulse, 1);      
+      digitalWrite(outputPulse, OUTPUT_NEG);      
       if(false)//!outputMem and (4294900000ul) < millis())
       {      
         resetFunc();  //call reset
@@ -115,18 +117,23 @@ void IOcontroll()
     } 
     
     // Stable output 
-    if(outputMem and ((time_started + 1000 * MAX_TIME) > millis()))   
+    if(hasStarted and outputMem and ((time_started + 1000 * MAX_TIME) > millis()))   
     {   
-      digitalWrite(output, 0);  
+      digitalWrite(output, !OUTPUT_NEG);  
     }
     else
     {
-      digitalWrite(output, 1);
+      digitalWrite(output, OUTPUT_NEG);
     }
 
+    if(((time_started + 1000 * MAX_TIME) < millis()) and ((time_started + 1000 * PULSE_TIME) < millis()) and !outputMem)
+    {
+      hasStarted = false;
+    }
+    
     // Error timing   
     #if enable_ERROR
-      if(outputMem and ((time_started + 1000 * ERROR_TIME)   < millis()))     
+      if(outputMem and ((time_started + 1000 * ERROR_TIME) < millis()))     
         {
         #ifdef LOGS
           Serial.println("ERROR: Sensing too long!");      
