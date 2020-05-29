@@ -1,6 +1,10 @@
-// Pokud je pozadovana komunikace s PC, tak umazat "//"
+
+// Testing
+#define               isRunning       true
+      // Pokud je pozadovana komunikace s PC, tak umazat "//"
 #define LOGS
 #define LOGS_readed_vals
+
 
 // Pinout  
 #define               TRANS_1         9      // NEMENIT - Vysílač páru 1
@@ -13,13 +17,13 @@
 #define               error           2      // Error dioda, ukazuje, že je ruka snímána moc dlouho (ERROR_TIME), výstupy jsou již vypnuté, program se zde zasekne, nutný restart.
 
 // Defines
-#define               FREQ            100    //Hz    Modulacni frekvence, max 100Hz (asi)
-#define               FREQ_DEAD_ZONE  40     //Hz    Maxmimalni odchylka namerene frekvence od vysilane
+#define               FREQ            20    //Hz    Modulacni frekvence, max 100Hz (asi)
+#define               FREQ_DEAD_ZONE  25     //Hz    Maxmimalni odchylka namerene frekvence od vysilane
 #define               omega           2 * PI * FREQ //rad/s  NEMENIT
 const int             loopTime      = 2000;  //us    Perioda vzorkovani, min 1800
 #define               lengthOfQ       100    //      Pocet vzorku, max 250, jinak pretece pamet
 const unsigned long   MAX_TIME      = 5;     //s     Maximalni doba trvani vystupu 'output'
 const unsigned long   PULSE_TIME    = 1;     //s     Doba trvani vystupu 'outputPulse'
-const unsigned long   ERROR_TIME    = 180;   //s     Maximalni povolena doba snimani ruky, vystup 'error'
+const unsigned long   ERROR_TIME    = 20;   //s     Maximalni povolena doba snimani ruky, vystup 'error'
 #define               enable_ERROR    true   //      false - bez erroru     true - s errorem
 #define               OUTPUT_NEG      false  //      false - pri zaznamenani LOG1

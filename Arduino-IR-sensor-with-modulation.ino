@@ -147,4 +147,14 @@ void IOcontroll()
         while(true);
         }     
     #endif 
+
+    #if isRunning
+      digitalWrite(output, 1);
+      delay(150);
+      digitalWrite(output, 0);
+      delay(150);
+      digitalWrite(output, 1);
+      delay(150);
+      digitalWrite(output, 0);
+    #endif
 }
