@@ -52,14 +52,14 @@ void loop() {
     analogWrite(TRANS_1, int(128 * (1 +  sin(omega * timy)))); 
     analogWrite(TRANS_2, int(128 * (1 +  sin(omega * timy)))); 
 
-    // "IOcontroll"
-    IOcontroll();
-
     // Read input and save in field
     int read1 = analogRead(REC_1);
     int read2 = analogRead(REC_2);
     fronta1.QPush(read1);
     fronta2.QPush(read2);
+    
+    // "IOcontroll"
+    IOcontroll();
     
     // Set stable loop time
     while(lastLoopTime + loopTime > micros());
@@ -105,8 +105,10 @@ void loop() {
 void IOcontroll()
 {
           //Serial.println((String)"outputMem: " + outputMem + " Zacal: " + time_started + " Ted je: " + millis() + " Rozdil: " + (millis() - time_started));       
-    // Pulzes
-    if((time_started + 1000ul * PULSE_TIME) > millis())
+    unsigned long timy = millis();
+    
+    // Pulzes    
+    if((time_started + 1000ul * PULSE_TIME) > timy)
     {      
       digitalWrite(outputPulse, !OUTPUT_NEG);
     }
@@ -116,7 +118,7 @@ void IOcontroll()
     } 
     
     // Stable output 
-    if(outputMem and ((time_started + 1000ul * MAX_TIME) > millis()))   
+    if(outputMem and ((time_started + 1000ul * MAX_TIME) > timy))   
     {   
       digitalWrite(output, !OUTPUT_NEG);  
     }
@@ -125,14 +127,14 @@ void IOcontroll()
       digitalWrite(output, OUTPUT_NEG);
     }
 
-    if((4294900000ul < millis()) and !outputMem and ((time_started + 1000ul * PULSE_TIME) < millis()))
+    if((4294900000ul < timy) and !outputMem and ((time_started + 1000ul * PULSE_TIME) < timy))
     {      
       resetFunc();  //call reset
     }
     
     // Error timing   
     #if enable_ERROR
-      if(outputMem and ((time_started + 1000ul * ERROR_TIME) < millis()))     
+      if(outputMem and ((time_started + 1000ul * ERROR_TIME) < timy))     
         {
         #ifdef LOGS
           Serial.println("ERROR: Sensing too long!");      
