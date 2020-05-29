@@ -109,11 +109,7 @@ void IOcontroll()
     }
     else
     {
-      digitalWrite(outputPulse, OUTPUT_NEG);      
-      if(false)//!outputMem and (4294900000ul) < millis())
-      {      
-        //resetFunc();  //call reset
-      }//*/
+      digitalWrite(outputPulse, OUTPUT_NEG);            
     } 
     
     // Stable output 
@@ -130,6 +126,11 @@ void IOcontroll()
     {
       hasStarted = false;
     }
+
+    if(!hasStarted and (4294900000ul) < millis())
+    {      
+      //resetFunc();  //call reset
+    }//*/
     
     // Error timing   
     #if enable_ERROR
