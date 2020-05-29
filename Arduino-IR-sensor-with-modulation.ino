@@ -79,7 +79,7 @@ void loop() {
   if(abs(dataFreq1 - FREQ) < FREQ_DEAD_ZONE or abs(dataFreq2 - FREQ) < FREQ_DEAD_ZONE) 
   { 
     #ifdef LOGS          
-      Serial.println("HAND"); 
+      Serial.print("HAND  "); 
     #endif         
     
     if(outputMem == false)
@@ -91,7 +91,7 @@ void loop() {
   else
   {
     #ifdef LOGS
-      Serial.println("NOTHING");      
+      Serial.print("NOTHING  ");      
     #endif
     outputMem = false;
   }   
@@ -104,7 +104,7 @@ void loop() {
 
 void IOcontroll()
 {
-          Serial.println((String)"outputMem: " + outputMem + " Zacal: " + time_started + " Ted je: " + millis() + " Rozdil: " + (millis() - time_started));       
+          //Serial.println((String)"outputMem: " + outputMem + " Zacal: " + time_started + " Ted je: " + millis() + " Rozdil: " + (millis() - time_started));       
     // Pulzes
     if((time_started + 1000ul * PULSE_TIME) > millis())
     {      

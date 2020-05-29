@@ -1,5 +1,5 @@
 // Pokud je pozadovana komunikace s PC, tak umazat //
-#define LOGS
+//#define LOGS
 //#define LOGS_readed_vals
 
 // Pinout  
