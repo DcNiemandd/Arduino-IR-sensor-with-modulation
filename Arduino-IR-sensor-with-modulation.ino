@@ -4,6 +4,7 @@
 unsigned long  lastLoopTime    = 0;
 unsigned long  time_started    = 0;
 unsigned long  error_blink     = 0;
+int     error_state     = 0;
 int     readValue       = 0;
 double  dataFreq1       = 0;
 double  dataFreq2       = 0;
@@ -35,13 +36,8 @@ void setup() {
   TCCR1B = TCCR1B & 0b11111000 | 0x02;
   if(TRANS_1 != 9 or TRANS_2 != 10)
     {
-    #ifdef LOGS
-      Serial.println("ERROR: Transmitters' pins are set wrong!");      
-    #endif 
-    digitalWrite(outputPulse, OUTPUT_NEG);  
-    digitalWrite(output, OUTPUT_NEG);  
-    digitalWrite(error, 1);  
-    while(true);
+    error_state = 1;
+    IOcontroll();
     } 
   lastLoopTime = micros();
 }
@@ -106,8 +102,7 @@ void loop() {
 }
 
 void IOcontroll()
-{
-          //Serial.println((String)"outputMem: " + outputMem + " Zacal: " + time_started + " Ted je: " + millis() + " Rozdil: " + (millis() - time_started));       
+{      
     unsigned long timy = millis();
     
     // Pulzes    
@@ -138,21 +133,48 @@ void IOcontroll()
     // Error timing   
     #if enable_ERROR
       if(outputMem and ((time_started + 1000ul * ERROR_TIME) < timy))     
-        {
-        #ifdef LOGS
-          Serial.println("ERROR: Sensing too long!");      
-        #endif 
-        digitalWrite(outputPulse, OUTPUT_NEG);  
-        digitalWrite(output, OUTPUT_NEG);  
-        digitalWrite(error, 1);  
-        while(true);
+        {         
+        error_state = 2;
         }     
+
+    switch (error_state)
+    {
+      // Bad pins for transmitters    
+      case 1:
+          #ifdef LOGS
+            Serial.println("ERROR: Transmitters' pins are set wrong!");      
+          #endif 
+          digitalWrite(error, true);
+          digitalWrite(outputPulse, OUTPUT_NEG);  
+          digitalWrite(output, OUTPUT_NEG); 
+          while(true);
+          break;
+      // Sensing error    
+      case 2:
+          #ifdef LOGS
+            Serial.println("ERROR: Sensing too long!");      
+          #endif 
+          digitalWrite(outputPulse, OUTPUT_NEG);  
+          digitalWrite(output, OUTPUT_NEG); 
+          while(true)
+          {
+            if((error_blink + 200ul) < millis())
+              {
+              digitalWrite(error, !digitalRead(error));
+              error_blink = millis();
+              }
+          }
+          break;  
+      // Is good
+      default:     
+          if((error_blink + 500ul) < timy)
+            {
+            digitalWrite(error, !digitalRead(error));
+            error_blink = timy;
+            }
+          break;      
+    }//switch for error_state
+    
     #endif 
 
-    #if isRunning
-      if((error_blink + 500ul) < timy)
-      {
-      digitalWrite(error, !digitalRead(error));
-      }
-    #endif
 }
