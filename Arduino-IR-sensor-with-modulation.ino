@@ -158,7 +158,7 @@ void IOcontroll()
           digitalWrite(output, OUTPUT_NEG); 
           while(true)
           {
-            if((error_blink + 200ul) < millis())
+            if((error_blink + 100ul) < millis())
               {
               digitalWrite(error, !digitalRead(error));
               error_blink = millis();
