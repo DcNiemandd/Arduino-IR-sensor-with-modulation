@@ -30,17 +30,10 @@ public:
 
   // Self-explanatory
   double AverageFreq(int treshold)
-  {    
-    #ifdef LOGS_readed_vals
-      Serial.print((String)"Kalibrace: " + treshold + " Data: ");
-      for(int i = 1; i < Q_length; i++)
-      {
-        Serial.print((String)" " + data[i-1]);
-      }
-      Serial.println((String)" " + data[Q_length]);//*/
-    #endif
+  {        
     int maxPos[Q_length] = { 0 };
     int maxCount = 0;
+    int maxVal = 0;
     
     for(int i = 2; i < Q_length; i++)
     {      
@@ -62,6 +55,23 @@ public:
     {
       returnVal += ((maxPos[i]-maxPos[i-1]));
     }
+
+    #if defined(LOGS_readed_vals) and defined(LOGS)
+      for(int i = 0; i < maxCount; i++)
+      {
+          maxVal = maxVal < data[maxPos[i]] ? data[maxPos[i]] : maxVal;
+      }
+      Serial.print((String)"Kalibrace: " + treshold + " Maximalni: " + maxVal + " Data: ");
+      for(int i = 1; i < Q_length; i++)
+      {
+        Serial.print((String)" " + data[i-1]);
+      }
+      Serial.println((String)" " + data[Q_length]);//*/
+    #endif
+
+
+
+    
     return returnVal==0 ? 0 : (maxCount)/(double(returnVal));
   }
 
@@ -100,6 +110,8 @@ public:
     {
       returnVal += maxPosThis[i] - maxPosThat[i];
     }
+
+
     
     return  (maxCountThis == 0)or(maxCountThat == 0) ? 0 : (maxCountThis > maxCountThat ? returnVal/maxCountThat : returnVal/maxCountThis);
   }
