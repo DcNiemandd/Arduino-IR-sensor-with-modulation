@@ -23,7 +23,7 @@ const int             loopTime      = 2000;  //us    Perioda vzorkovani, min 180
 #define               lengthOfQ       100    //      Pocet vzorku, max 250, jinak pretece pamet
 const unsigned long   MAX_TIME      = 5;     //s     Maximalni doba trvani vystupu 'output'
 const unsigned long   PULSE_TIME    = 1;     //s     Doba trvani vystupu 'outputPulse'
-const unsigned long   ERROR_TIME    = 20;   //s     Maximalni povolena doba snimani ruky, vystup 'error'
+const unsigned long   ERROR_TIME    = 180;   //s     Maximalni povolena doba snimani ruky, vystup 'error'
 #define               OUTPUT_NEG      false  //      false - pri zaznamenani LOG1
 
 #define               enable_ERROR    true   //      false - bez erroru     true - s errorem
