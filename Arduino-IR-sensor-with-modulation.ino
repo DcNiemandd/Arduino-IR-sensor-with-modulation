@@ -3,6 +3,7 @@
   
 unsigned long  lastLoopTime    = 0;
 unsigned long  time_started    = 0;
+unsigned long  error_blink     = 0;
 int     readValue       = 0;
 double  dataFreq1       = 0;
 double  dataFreq2       = 0;
@@ -149,12 +150,9 @@ void IOcontroll()
     #endif 
 
     #if isRunning
-      digitalWrite(output, 1);
-      delay(150);
-      digitalWrite(output, 0);
-      delay(150);
-      digitalWrite(output, 1);
-      delay(150);
-      digitalWrite(output, 0);
+      if((error_blink + 500ul) < timy)
+      {
+      digitalWrite(error, !digitalRead(error));
+      }
     #endif
 }
